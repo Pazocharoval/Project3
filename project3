@@ -1,0 +1,39 @@
+import os
+import shutil
+
+# Укажите путь к папке A (где находятся папки 1, 2, 3 и т.д.)
+source_dir = 'C:\\Users\\Lenovo\\Downloads\\XNXX\\AD'  # Замените на ваш путь
+destination_dir = 'C:\\Users\\Lenovo\\Downloads\\Xvideos'  # Папка для отсортированных файлов
+
+# Создаем новую папку, если она не существует
+if not os.path.exists(destination_dir):
+    os.makedirs(destination_dir)
+
+# Список всех папок в исходной папке
+subfolders = [f for f in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, f))]
+
+# Сортируем подкаталоги по номеру
+subfolders.sort(key=lambda x: int(x))
+
+# Инициализируем счетчик для переименования файлов
+file_counter = 1
+
+for subfolder in subfolders:
+    subfolder_path = os.path.join(source_dir, subfolder)
+    # Список файлов в текущей подкаталоге
+    files = [f for f in os.listdir(subfolder_path) if os.path.isfile(os.path.join(subfolder_path, f))]
+    # Сортируем файлы по имени
+    files.sort()
+    
+    for file in files:
+        # Новый путь для файла
+        new_file_name = f'image_{file_counter}.jpg'  # Замените расширение на ваше
+        new_file_path = os.path.join(destination_dir, new_file_name)
+        
+        # Перемещаем файл с новым именем
+        shutil.move(os.path.join(subfolder_path, file), new_file_path)
+        
+        # Увеличиваем счетчик
+        file_counter += 1
+
+print("Файлы успешно отсортированы и переименованы!")
